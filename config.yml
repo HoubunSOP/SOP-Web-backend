@@ -1,0 +1,6 @@
+database:
+  host: 192.168.21.128
+  port: 3306
+  user: houbunsop
+  password: houbunsop
+  database: houbunsop
