@@ -35,7 +35,7 @@ async def get_post_info(post_id: int, db: Database):
         categories = list(set(categories))
         tags = list(set(tags))
         return {"status": "success",
-                "message": {"comic_id": post_id, "post_name": post_name, "post_date": post_date,
+                "message": {"post_id": post_id, "post_name": post_name, "post_date": post_date,
                             "post_content": post_content, "post_cover": post_cover, "post_comic": post_comic,
                             "categories": categories, "tags": tags}}
     else:
