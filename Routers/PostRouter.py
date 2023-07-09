@@ -2,20 +2,9 @@ from fastapi import APIRouter
 from endpoints.post.CreatePost import create_post
 from endpoints.post.GetPost import get_post_info
 from Model import PostCreate
-from database import Database
+from Routers.DatabaseConnect import db
 
 router = APIRouter()
-db = Database()
-
-
-@router.on_event("startup")
-async def startup():
-    await db.connect()
-
-
-@router.on_event("shutdown")
-async def shutdown():
-    await db.disconnect()
 
 
 ###############

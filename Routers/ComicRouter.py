@@ -2,20 +2,9 @@ from fastapi import APIRouter
 from endpoints.comic.CreateComic import create_comic
 from endpoints.comic.GetComic import get_comic_info
 from Model import ComicCreate
-from database import Database
+from Routers.DatabaseConnect import db
 
 router = APIRouter()
-db = Database()
-
-
-@router.on_event("startup")
-async def startup():
-    await db.connect()
-
-
-@router.on_event("shutdown")
-async def shutdown():
-    await db.disconnect()
 
 
 ###############

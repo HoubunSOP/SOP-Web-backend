@@ -1,14 +1,18 @@
 from fastapi import FastAPI
 
-from Routers import ComicRouter, PostRouter
+from Routers import ComicRouter, PostRouter, CategoryRouter, TagRouter, DatabaseConnect
 from database import Database
 
 app = FastAPI()
 db = Database()
-# 注册漫画分区的API路由
+# 注册API路由
 app.include_router(PostRouter.router)
 app.include_router(ComicRouter.router)
+app.include_router(CategoryRouter.router)
+app.include_router(TagRouter.router)
 
+# 这不是路由，而是让其他路由连接的数据库控件
+app.include_router(DatabaseConnect.router)
 
 
 ###############
