@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException, Depends
 from Routers.DatabaseConnect import db
 
 from endpoints.category.GetCategory import get_comics_by_category, get_posts_by_category
@@ -7,8 +7,16 @@ from endpoints.category.GetCategoryList import get_category_list
 router = APIRouter()
 
 
+async def validate_type(type: str = Query(None, description="分类类型（漫画/文章/Null）")):
+    if type is None:
+        return None
+    if type not in ["漫画", "文章"]:
+        raise HTTPException(status_code=400, detail="类型错误")
+    return type
+
+
 @router.get("/category/list")
-async def get_category_list_route(type: str = Query(None, description="分类类型（漫画/文章/Null）")):
+async def get_category_list_route(type: str = Depends(validate_type)):
     """
     根据获取分类列表。
 
