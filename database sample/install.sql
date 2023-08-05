@@ -64,3 +64,7 @@ CREATE TABLE article_tag_map
     FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE
 );
+CREATE TABLE settings
+(
+    topswiper   VARCHAR(255) NOT NULL COMMENT 'topswiper的文章id'
+)

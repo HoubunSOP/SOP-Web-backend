@@ -1,8 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from endpoints.comic.CreateComic import create_comic
 from endpoints.comic.GetComic import get_comic_info
 from Model import ComicCreate
 from Routers.DatabaseConnect import db
+from endpoints.comic.GetComicList import get_comic_list
 
 router = APIRouter()
 
@@ -10,6 +11,15 @@ router = APIRouter()
 ###############
 # get区
 ###############
+@router.get("/comic/list")
+async def get_comic_list_route(limit: int = Query(10, gt=0), page: int = Query(1, gt=0),
+                               category_id: int = Query(None, gt=0)):
+    """
+    根据limit与page参数获取漫画列表。
+    """
+    result = await get_comic_list(db, limit, page, category_id)
+    return result
+
 
 @router.get("/comic/{comic_id}")
 async def get_comic_info_route(comic_id: int):
