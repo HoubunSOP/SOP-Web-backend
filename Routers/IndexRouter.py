@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from endpoints.page.index.GetMangaCalendar import get_manga_calendar
 from endpoints.page.index.GetMangaList import get_manga_list
+from endpoints.page.index.GetRecommendedArticles import get_recommended_articles
 from endpoints.page.index.GetTopSwiper import get_top_swiper
 from Routers.DatabaseConnect import db
 
@@ -36,4 +37,10 @@ async def manga_calendar_route():
     获取±90天的漫画发布日期及信息并以calendar数据返回
     """
     result = await get_manga_calendar(db)
+    return result
+
+
+@router.get("/index/recommended")
+async def recommended_articles_route():
+    result = await get_recommended_articles(db)
     return result

@@ -1,7 +1,8 @@
 from datetime import timedelta, date
 from database import Database
 
-async def get_manga_calendar(db:Database):
+
+async def get_manga_calendar(db: Database):
     # 获取当前时间前后三个月的时间范围
     today = date.today()
     start_date = today - timedelta(days=90)

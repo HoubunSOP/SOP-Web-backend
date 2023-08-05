@@ -40,12 +40,13 @@ CREATE TABLE comic_tag_map
 );
 CREATE TABLE articles
 (
-    id      INT          NOT NULL AUTO_INCREMENT COMMENT '文章唯一标识',
-    title   VARCHAR(255) NOT NULL COMMENT '文章标题',
-    date    DATE         NOT NULL COMMENT '文章发布日期',
-    content TEXT COMMENT '文章内容，支持Markdown语法',
-    cover   varchar(255) DEFAULT NULL COMMENT '文章封面',
-    comic   varchar(255) DEFAULT NULL COMMENT '关联漫画',
+    id          INT          NOT NULL AUTO_INCREMENT COMMENT '文章唯一标识',
+    title       VARCHAR(255) NOT NULL COMMENT '文章标题',
+    date        DATE         NOT NULL COMMENT '文章发布日期',
+    content     TEXT COMMENT '文章内容，支持Markdown语法',
+    cover       varchar(255)      DEFAULT NULL COMMENT '文章封面',
+    comic       varchar(255)      DEFAULT NULL COMMENT '关联漫画',
+    recommended BOOLEAN      NULL DEFAULT FALSE COMMENT '是否为推荐文章',
     PRIMARY KEY (id)
 );
 CREATE TABLE article_category_map
@@ -66,5 +67,5 @@ CREATE TABLE article_tag_map
 );
 CREATE TABLE settings
 (
-    topswiper   VARCHAR(255) NOT NULL COMMENT 'topswiper的文章id'
+    topswiper VARCHAR(255) NOT NULL COMMENT 'topswiper的文章id'
 )
