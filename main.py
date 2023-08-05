@@ -17,8 +17,8 @@ app.include_router(IndexRouter.router)
 app.include_router(DatabaseConnect.router)
 
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
+    "http://sop.sakurakoi.top",
+    "https://sop.sakurakoi.top",
     "http://localhost",
     "http://localhost:3000",
 ]
