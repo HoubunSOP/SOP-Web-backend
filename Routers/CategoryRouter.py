@@ -8,7 +8,18 @@ router = APIRouter()
 
 
 @router.get("/category/list")
-async def get_category_list_route(type: str = Query(None, description="分类类型（可选）")):
+async def get_category_list_route(type: str = Query(None, description="分类类型（漫画/文章/Null）")):
+    """
+    根据获取分类列表。
+
+    Args:
+        type (str): 分类类型(漫画/文章/空)。
+
+
+    Returns:
+        dict: 包含分类列表的json。
+    :param type:
+    """
     result = await get_category_list(type, db)
     return result
 

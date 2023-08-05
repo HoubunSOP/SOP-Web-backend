@@ -29,4 +29,4 @@ async def get_category_list(type: str, db: Database):
         }
         categories.append(category)
 
-    return {"status": "success", "categories": categories}
+    return {"status": "success", "messages": categories}
