@@ -2,7 +2,7 @@ import re
 import mistune
 
 
-def markdown_renderer():
+def markdown_renderer(comic_intro):
     class CustomRenderer(mistune.HTMLRenderer):
         def paragraph(self, text):
             # 添加高亮背景
@@ -49,13 +49,7 @@ def markdown_renderer():
 
             return '<img src="{}" alt="{}" {} class="alignnone">'.format(url, alt, title)
 
-    markdown_text = '''
-    ![image](path/to/image.png)
-
-    **[font color=#fff]qwq[/font]**
-
-    > [highlight]test[/highlight]
-    '''
+    markdown_text = comic_intro
     renderer = CustomRenderer()
     markdown = mistune.Markdown(renderer=renderer)
     html = markdown(markdown_text)

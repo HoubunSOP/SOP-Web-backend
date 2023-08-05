@@ -1,3 +1,4 @@
+from components.MarkdownRenderer import markdown_renderer
 from database import Database
 
 
@@ -34,6 +35,7 @@ async def get_comic_info(comic_id: int, db: Database):
                 tags += r['tag_names'].split(',')
         categories = list(set(categories))
         tags = list(set(tags))
+        comic_intro = markdown_renderer(comic_intro)
         return {"status": "success",
                 "message": {"comic_id": comic_id, "comic_name": comic_name, "comic_date": comic_date,
                             "comic_intro": comic_intro, "comic_cover": comic_cover, "comic_magazine": comic_magazine,

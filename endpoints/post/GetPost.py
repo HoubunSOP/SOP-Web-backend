@@ -1,3 +1,4 @@
+from components.MarkdownRenderer import markdown_renderer
 from database import Database
 
 
@@ -34,6 +35,7 @@ async def get_post_info(post_id: int, db: Database):
                 tags += r['tag_names'].split(',')
         categories = list(set(categories))
         tags = list(set(tags))
+        post_content = markdown_renderer(post_content)
         return {"status": "success",
                 "message": {"post_id": post_id, "post_name": post_name, "post_date": post_date,
                             "post_content": post_content, "post_cover": post_cover, "post_comic": post_comic,
