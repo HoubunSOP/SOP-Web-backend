@@ -15,7 +15,7 @@ async def get_manga_list(db:Database):
 
     # 执行查询
     result = await db.execute(sql, first_day_of_month)
-    if len(result) <= 2:
+    if len(result) <= 1:
         return {"status": "warn", "message": "当前并没有漫画预计发布"}
     # 构造返回结果
     manga_list = []
