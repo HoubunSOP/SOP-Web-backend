@@ -11,23 +11,23 @@ VALUES ('标签1', '漫画'),
 INSERT INTO comics (name, date, intro, cover, magazine)
 VALUES (
     '漫画1',
-    '2021-01-01',
+    '2023-08-01',
     '这是漫画1的简介，支持Markdown语法。',
-    'comic1_cover.jpg',
+    'https://s2.loli.net/2023/02/05/MCwSJxVNW8zrF12.jpg',
     '刊物1'
   ),
   (
     '漫画2',
-    '2021-02-01',
+    '2023-09-01',
     '这是漫画2的简介，支持Markdown语法。',
-    'comic2_cover.jpg',
+    'https://s2.loli.net/2023/02/05/MCwSJxVNW8zrF12.jpg',
     '刊物2'
   ),
   (
     '漫画3',
-    '2021-03-01',
+    '2023-10-01',
     '这是漫画3的简介，支持Markdown语法。',
-    'comic3_cover.jpg',
+    'https://s2.loli.net/2023/02/05/MCwSJxVNW8zrF12.jpg',
     '刊物1'
   );
 INSERT INTO articles (title, date, content)

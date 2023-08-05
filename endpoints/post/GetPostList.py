@@ -16,12 +16,15 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
 
     # 构建计数查询的SQL语句
     count_sql = "SELECT COUNT(*) FROM articles"
+
     if category_id:
         count_sql += " INNER JOIN article_category_map ON articles.id = article_category_map.article_id"
         count_sql += " WHERE article_category_map.category_id = %s"
+        count_result = await db.execute(count_sql, category_id)  # 使用带有分类筛选的计数查询
+    else:
+        count_result = await db.execute(count_sql)
 
     # 计算总页数
-    count_result = await db.execute(count_sql, category_id)  # 使用带有分类筛选的计数查询
     total_count = count_result[0]['COUNT(*)']
     total_pages = (total_count + limit - 1) // limit
     if page > total_pages:
@@ -36,10 +39,13 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
 
     # 计算当前页的文章列表
     offset = limit * (page - 1)
-    result = await db.execute(list_sql, category_id, limit, offset)  # 使用带有分类筛选的文章列表查询
+    if category_id:
+        result = await db.execute(list_sql, category_id, limit, offset)  # 使用带有分类筛选的文章列表查询
+    else:
+        result = await db.execute(list_sql, limit, offset)
     articles = []
     for row in result:
         article = {'id': row['id'], 'title': row['title'], 'date': row['date'], 'cover': row['cover']}
         articles.append(article)
 
-    return {"status": "success", "message": {'articles': articles, 'total_pages': total_pages}}
+    return {"status": "success", "messages": {'articles': articles, 'total_pages': total_pages}}
