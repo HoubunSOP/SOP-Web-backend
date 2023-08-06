@@ -47,11 +47,11 @@ def markdown_renderer(comic_intro):
             else:
                 title = ""
 
-            return '<img src="{}" alt="{}" {} class="alignnone">'.format(url, alt, title)
+            return '<img src="{}" alt="{}" {} class="image-zoomableqwq">'.format(url, alt, title)
 
     markdown_text = comic_intro
     renderer = CustomRenderer()
     markdown = mistune.Markdown(renderer=renderer)
     html = markdown(markdown_text)
-    encoded_html = html.replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
-    return encoded_html
+    # encoded_html = html.replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+    return html

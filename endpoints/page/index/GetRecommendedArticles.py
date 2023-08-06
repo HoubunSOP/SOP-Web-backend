@@ -11,4 +11,4 @@ async def get_recommended_articles(db: Database):
             "cover": row["cover"]
         }
         articles_list.append(article)
-    return {"status": "success", "messages": articles_list}
+    return {"status": "success", "message": articles_list}

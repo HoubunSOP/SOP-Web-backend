@@ -2,6 +2,7 @@ CREATE TABLE comics
 (
     id       INT          NOT NULL AUTO_INCREMENT COMMENT '漫画唯一标识',
     name     VARCHAR(255) NOT NULL COMMENT '漫画名称',
+    author   VARCHAR(255) NOT NULL DEFAULT '未知' COMMENT '作者名称',
     date     DATE         NOT NULL COMMENT '漫画发布日期',
     intro    TEXT COMMENT '漫画简介，支持Markdown语法',
     cover    VARCHAR(255) NOT NULL COMMENT '封面图片文件名',

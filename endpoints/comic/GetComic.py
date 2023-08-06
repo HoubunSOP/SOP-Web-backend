@@ -9,6 +9,7 @@ async def get_comic_info(comic_id: int, db: Database):
                c.intro AS comic_intro,
                c.cover AS comic_cover,
                c.magazine AS comic_magazine,
+               c.author AS comic_author,
                GROUP_CONCAT(DISTINCT ca.name) AS category_names,
                GROUP_CONCAT(DISTINCT t.name) AS tag_names
         FROM comics c
@@ -26,6 +27,7 @@ async def get_comic_info(comic_id: int, db: Database):
         comic_intro = result[0]['comic_intro']
         comic_cover = result[0]['comic_cover']
         comic_magazine = result[0]['comic_magazine']
+        comic_author = result[0]['comic_author']
         categories = []
         tags = []
         for r in result:
@@ -37,7 +39,8 @@ async def get_comic_info(comic_id: int, db: Database):
         tags = list(set(tags))
         comic_intro = markdown_renderer(comic_intro)
         return {"status": "success",
-                "message": {"comic_id": comic_id, "comic_name": comic_name, "comic_date": comic_date,
+                "message": {"comic_id": comic_id, "comic_name": comic_name, "comic_author": comic_author,
+                            "comic_date": comic_date,
                             "comic_intro": comic_intro, "comic_cover": comic_cover, "comic_magazine": comic_magazine,
                             "categories": categories, "tags": tags}}
     else:

@@ -31,4 +31,4 @@ async def get_manga_calendar(db: Database):
         }
         manga_list.append(manga)
 
-    return {"status": "success", "messages": manga_list}
+    return {"status": "success", "message": manga_list}
