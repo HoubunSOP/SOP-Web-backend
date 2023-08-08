@@ -19,6 +19,10 @@ app.include_router(DatabaseConnect.router)
 origins = [
     "http://sop.sakurakoi.top",
     "https://sop.sakurakoi.top",
+    "https://www.fwgxt.top",
+    "https://fwgxt.top",
+    "http://www.fwgxt.top",
+    "http://fwgxt.top",
     "http://localhost",
     "http://localhost:3000",
     "http://localhost:3001",
