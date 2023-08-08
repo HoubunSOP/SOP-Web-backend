@@ -21,7 +21,10 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
         count_sql += " WHERE comic_category_map.category_id = %s"
 
     # 计算总页数
-    count_result = await db.execute(count_sql, category_id)  # 使用带有分类筛选的计数查询
+    if category_id:
+        count_result = await db.execute(count_sql, category_id)  # 使用带有分类筛选的计数查询
+    else:
+        count_result = await db.execute(count_sql)
     total_count = count_result[0]['COUNT(*)']
     total_pages = (total_count + limit - 1) // limit
     if page > total_pages:
@@ -43,10 +46,16 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
 
     # 计算当前页的文章列表
     offset = limit * (page - 1)
-    result = await db.execute(list_sql, category_id, limit, offset)  # 使用带有分类筛选的文章列表查询
+    if category_id:
+        result = await db.execute(list_sql, category_id, limit, offset)  # 使用带有分类筛选的文章列表查询
+    else:
+        result = await db.execute(list_sql, limit, offset)
     comics = []
     for row in result:
-        categories = row['categories'].split(":")
+        if row['categories']:
+            categories = row['categories'].split(":")
+        else:
+            categories = ["", "未分类"]
         comic = {'id': row['id'], 'name': row['name'], 'date': row['date'], 'cover': row['cover'],
                  'category_id': categories[0], 'category_name': categories[1]}
         comics.append(comic)
