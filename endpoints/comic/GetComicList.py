@@ -19,9 +19,6 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
     if category_id:
         count_sql += " INNER JOIN comic_category_map ON comics.id = comic_category_map.comic_id"
         count_sql += " WHERE comic_category_map.category_id = %s"
-
-    # 计算总页数
-    if category_id:
         count_result = await db.execute(count_sql, category_id)  # 使用带有分类筛选的计数查询
     else:
         count_result = await db.execute(count_sql)
@@ -32,7 +29,7 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
 
     # 构建文章列表查询的SQL语句
     list_sql = '''
-            SELECT a.id, a.name, a.date, a.cover,
+        SELECT a.id, a.name, a.date, a.cover,
                (SELECT GROUP_CONCAT(c.id, ':', c.name) 
                 FROM comic_category_map AS acm 
                 JOIN categories AS c ON acm.category_id = c.id 
@@ -40,8 +37,8 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
         FROM comics AS a
     '''
     if category_id:
-        list_sql += " INNER JOIN comic_category_map ON comics.id = comic_category_map.comic_id"
-        list_sql += " WHERE comic_category_map.category_id = %s"
+        list_sql += " INNER JOIN comic_category_map AS cc ON a.id = cc.comic_id"
+        list_sql += " WHERE cc.category_id = %s"
     list_sql += " ORDER BY a.date DESC LIMIT %s OFFSET %s"
 
     # 计算当前页的文章列表

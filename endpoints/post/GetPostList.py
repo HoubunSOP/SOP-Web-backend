@@ -12,7 +12,7 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
         category = category_result[0]['category']
 
         if category == '漫画':
-            return {"status": "error", 'message': "无法筛选漫画"}
+            return {"status": "error", 'message': "无法从文章列表筛选漫画分类"}
 
     # 构建计数查询的SQL语句
     count_sql = "SELECT COUNT(*) FROM articles a"
