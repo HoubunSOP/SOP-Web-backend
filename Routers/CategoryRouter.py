@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Query, HTTPException, Depends
+
+from Model import RenameCat
 from Routers.DatabaseConnect import db
 
 from endpoints.category.GetCategory import get_comics_by_category, get_posts_by_category
 from endpoints.category.GetCategoryList import get_category_list
+from endpoints.category.DelChangeCategory import delete_empty_category, update_category_name
 
 router = APIRouter()
 
@@ -29,6 +32,24 @@ async def get_category_list_route(type: str = Depends(validate_type)):
     :param type:
     """
     result = await get_category_list(type, db)
+    return result
+
+
+@router.get("/category/del/{category_id}")
+async def del_category_route(category_id: int):
+    """
+    删除文章分类。
+    """
+    result = await delete_empty_category(db, category_id)
+    return result
+
+
+@router.put("/category/rename/")
+async def rename_category_route(rename_data: RenameCat):
+    """
+    重命名分类。
+    """
+    result = await update_category_name(db, rename_data.category_id, rename_data.new_name)
     return result
 
 

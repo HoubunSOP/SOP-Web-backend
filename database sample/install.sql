@@ -1,3 +1,4 @@
+-- 创建表
 CREATE TABLE comics
 (
     id       INT          NOT NULL AUTO_INCREMENT COMMENT '漫画唯一标识',
@@ -69,4 +70,10 @@ CREATE TABLE article_tag_map
 CREATE TABLE settings
 (
     topswiper VARCHAR(255) NOT NULL COMMENT 'topswiper的文章id'
-)
+);
+-- 添加漫画分类
+INSERT INTO categories (name, category)
+VALUES ('Kirara', '漫画'),
+       ('MAX', '漫画'),
+       ('Carat', '漫画'),
+       ('Forward', '漫画')

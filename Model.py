@@ -22,3 +22,8 @@ class PostCreate(BaseModel):
     post_comic: List[int]
     categories: List[str]
     tags: List[str]
+
+
+class RenameCat(BaseModel):
+    new_name: str
+    category_id: int
