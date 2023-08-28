@@ -14,14 +14,18 @@ class ComicCreate(BaseModel):
     tags: List[str]
 
 
+class Category(BaseModel):
+    id: int
+    label: str
+
+
 class PostCreate(BaseModel):
-    post_name: str
-    post_date: date
-    post_content: str
-    post_cover: str
-    post_comic: List[int]
-    categories: List[str]
-    tags: List[str]
+    post_id: int
+    name: str
+    time: date
+    content: str
+    cover: str
+    category: Category
 
 
 class RenameCat(BaseModel):

@@ -4,10 +4,13 @@ from database import Database
 async def get_category_list(type: str, db: Database):
     # 构建查询分类列表和文章数量的SQL语句
     sql = """
-        SELECT categories.id, categories.name, COUNT(*) AS article_count
+        SELECT categories.id, categories.name, (
+            SELECT COUNT(*)
+            FROM article_category_map
+            LEFT JOIN articles ON article_category_map.article_id = articles.id
+            WHERE article_category_map.category_id = categories.id
+        ) AS article_count
         FROM categories
-        LEFT JOIN article_category_map ON categories.id = article_category_map.category_id
-        LEFT JOIN articles ON article_category_map.article_id = articles.id
         """
 
     if type:

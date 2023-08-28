@@ -2,6 +2,14 @@ from database import Database
 
 
 async def delete_empty_category(db: Database, category_id):
+    # 检查分类是否存在
+    check_query = "SELECT COUNT(*) FROM categories WHERE id = %s"
+    result = await db.execute(check_query, category_id)
+    count = result[0]["COUNT(*)"]
+
+    if count == 0:
+        # 分类不存在，返回错误或抛出异常，根据你的需求
+        return {"status": "error", "message": "并没有此分类"}
     # 查询分类下的文章数量
     query = "SELECT COUNT(*) FROM article_category_map WHERE category_id = %s"
     result = await db.execute(query, category_id)
