@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from endpoints.post.CreatePost import create_post
+from endpoints.post.DelPost import delete_post
 from endpoints.post.GetPost import get_post_info
 from endpoints.post.GetPostList import get_post_list
 from Model import PostCreate
@@ -26,8 +27,17 @@ async def get_post_list_route(limit: int = Query(10, gt=0), page: int = Query(1,
     return result
 
 
+@router.get("/post/del/{post_id}")
+async def del_post_route(post_id: int):
+    """
+    删除文章分类。
+    """
+    result = await delete_post(post_id, db)
+    return result
+
+
 @router.get("/post/{post_id}")
-async def get_post_info_route(post_id: int):
+async def get_post_info_route(post_id: int, md: int = Query(None, gt=0)):
     """
     根据漫画ID获取漫画信息。
 
@@ -37,7 +47,7 @@ async def get_post_info_route(post_id: int):
     Returns:
         dict: 包含漫画信息的json。
     """
-    result = await get_post_info(post_id, db)
+    result = await get_post_info(post_id, md, db)
     return result
 
 

@@ -2,7 +2,7 @@ from components.MarkdownRenderer import markdown_renderer
 from database import Database
 
 
-async def get_post_info(post_id: int, db: Database):
+async def get_post_info(post_id: int, md: int, db: Database):
     query = """
         SELECT c.title AS post_name,
                c.date AS post_date,
@@ -10,6 +10,7 @@ async def get_post_info(post_id: int, db: Database):
                c.cover AS post_cover,
                c.comic AS post_comic,
                GROUP_CONCAT(DISTINCT ca.name) AS category_names,
+               GROUP_CONCAT(DISTINCT ca.id) AS category_id,
                GROUP_CONCAT(DISTINCT t.name) AS tag_names
         FROM articles c
         LEFT JOIN article_category_map cc ON c.id = cc.article_id
@@ -26,6 +27,7 @@ async def get_post_info(post_id: int, db: Database):
         post_content = result[0]['post_content']
         post_cover = result[0]['post_cover']
         post_comic = result[0]['post_comic']
+        category_id = result[0]['category_id']
         categories = []
         tags = []
         for r in result:
@@ -35,10 +37,11 @@ async def get_post_info(post_id: int, db: Database):
                 tags += r['tag_names'].split(',')
         categories = list(set(categories))
         tags = list(set(tags))
-        post_content = markdown_renderer(post_content)
+        if md != 1:
+            post_content = markdown_renderer(post_content)
         return {"status": "success",
                 "message": {"post_id": post_id, "post_name": post_name, "post_date": post_date,
                             "post_content": post_content, "post_cover": post_cover, "post_comic": post_comic,
-                            "categories": categories, "tags": tags}}
+                            "categories": categories, "category_id": category_id, "tags": tags}}
     else:
         return {"status": "error", "message": "文章不存在"}
