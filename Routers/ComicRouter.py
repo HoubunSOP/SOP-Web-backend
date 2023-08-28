@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from endpoints.comic.CreateComic import create_comic
+from endpoints.comic.DelComic import delete_comic
 from endpoints.comic.GetComic import get_comic_info
 from Model import ComicCreate
 from Routers.DatabaseConnect import db
@@ -19,10 +20,17 @@ async def get_comic_list_route(limit: int = Query(10, gt=0), page: int = Query(1
     """
     result = await get_comic_list(db, limit, page, category_id)
     return result
+@router.get("/comic/del/{comic_id}")
+async def del_comic_route(comic_id: int):
+    """
+    删除漫画。
+    """
+    result = await delete_comic(comic_id, db)
+    return result
 
 
 @router.get("/comic/{comic_id}")
-async def get_comic_info_route(comic_id: int):
+async def get_comic_info_route(comic_id: int, md: int = Query(None, gt=0)):
     """
     根据漫画ID获取漫画信息。
 
@@ -32,7 +40,7 @@ async def get_comic_info_route(comic_id: int):
     Returns:
         dict: 包含漫画信息的json。
     """
-    result = await get_comic_info(comic_id, db)
+    result = await get_comic_info(comic_id, md, db)
     return result
 
 

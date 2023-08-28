@@ -46,6 +46,8 @@ async def get_post_info_route(post_id: int, md: int = Query(None, gt=0)):
 
     Returns:
         dict: 包含漫画信息的json。
+        :param post_id:
+        :param md:
     """
     result = await get_post_info(post_id, md, db)
     return result

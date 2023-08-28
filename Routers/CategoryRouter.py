@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Query, HTTPException, Depends
 
-from Model import RenameCat
+from Model import RenameCat, CategoryCreate
 from Routers.DatabaseConnect import db
+from endpoints.category.CreateCategory import create_category
 
 from endpoints.category.GetCategory import get_comics_by_category, get_posts_by_category
 from endpoints.category.GetCategoryList import get_category_list
@@ -44,15 +45,6 @@ async def del_category_route(category_id: int):
     return result
 
 
-@router.put("/category/rename/")
-async def rename_category_route(rename_data: RenameCat):
-    """
-    重命名分类。
-    """
-    result = await update_category_name(db, rename_data.category_id, rename_data.new_name)
-    return result
-
-
 @router.get("/category/{category_id}")
 async def get_category_info_route(category_id: int, num: int = Query(10, ge=0, le=100), types: str = Query('comic')):
     """
@@ -72,4 +64,22 @@ async def get_category_info_route(category_id: int, num: int = Query(10, ge=0, l
         result = await get_comics_by_category(db, category_id, num)
     else:
         result = await get_posts_by_category(db, category_id, num)
+    return result
+
+
+@router.put("/category/rename/")
+async def rename_category_route(rename_data: RenameCat):
+    """
+    重命名分类。
+    """
+    result = await update_category_name(db, rename_data.category_id, rename_data.new_name)
+    return result
+
+
+@router.post("/category/new/")
+async def rename_category_route(new_cat_data: CategoryCreate):
+    """
+    新建分类。
+    """
+    result = await create_category(new_cat_data, db)
     return result
