@@ -1,3 +1,4 @@
+from Model import CustomHTTPException
 from database import Database
 
 
@@ -32,7 +33,7 @@ async def get_posts_by_tag(db: Database, tag_id: int, num: int):
     types = await db.execute('SELECT tag FROM tags WHERE id = %s;', tag_id)
     print(types)
     if types[0]['tag'] != '文章':
-        return {"status": "error", "message": "此标签ID为漫画类型"}
+        raise CustomHTTPException(detail='此标签ID为漫画类型')
     # 执行查询
     query = """
         SELECT c.id, c.title, c.date, c.cover

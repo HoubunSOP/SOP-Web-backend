@@ -1,6 +1,7 @@
 import aiomysql
 from fastapi import HTTPException
 
+from Model import CustomHTTPException
 from Model import PostCreate
 from database import Database
 
@@ -16,7 +17,7 @@ async def create_post(post_data: PostCreate, db: Database):
         post_comic = ""
         category_id = post_data.category.id  # 使用单个分类ID
     except KeyError as e:
-        raise HTTPException(status_code=400, detail=f"缺少必要字段：{str(e)}")
+        raise CustomHTTPException(status_code=400, detail=f"缺少必要字段：{str(e)}")
 
     try:
         # 在事务中执行数据库操作
@@ -57,6 +58,6 @@ async def create_post(post_data: PostCreate, db: Database):
                 post_id, category_id
             )
     except aiomysql.Error as e:
-        raise HTTPException(status_code=500, detail=f"数据库错误：{str(e)}")
+        raise CustomHTTPException(status_code=500, detail=f"数据库错误：{str(e)}")
 
     return {"status": "success", "message": "文章已成功创建/更新！"}

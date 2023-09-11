@@ -1,5 +1,7 @@
 fastapi >= 0.100.0
 uvicorn
-aiomysql
-PyYAML
-mistune
+aiomysql~=0.2.0
+PyYAML~=6.0.1
+mistune~=3.0.1
+starlette~=0.27.0
+pydantic~=2.3.0

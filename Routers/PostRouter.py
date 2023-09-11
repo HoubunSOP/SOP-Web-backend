@@ -1,10 +1,13 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Security
+from fastapi_jwt import JwtAuthorizationCredentials
+
+from Model import CustomHTTPException
+from Model import PostCreate, access_security
+from Routers.DatabaseConnect import db
 from endpoints.post.CreatePost import create_post
 from endpoints.post.DelPost import delete_post
 from endpoints.post.GetPost import get_post_info
 from endpoints.post.GetPostList import get_post_list
-from Model import PostCreate
-from Routers.DatabaseConnect import db
 
 router = APIRouter()
 
@@ -28,10 +31,12 @@ async def get_post_list_route(limit: int = Query(10, gt=0), page: int = Query(1,
 
 
 @router.get("/post/del/{post_id}")
-async def del_post_route(post_id: int):
+async def del_post_route(post_id: int, credentials: JwtAuthorizationCredentials = Security(access_security)):
     """
-    删除文章分类。
+    删除文章。
     """
+    if not credentials:
+        raise CustomHTTPException(detail='您并没有权限这样做')
     result = await delete_post(post_id, db)
     return result
 
@@ -57,7 +62,8 @@ async def get_post_info_route(post_id: int, md: int = Query(None, gt=0)):
 # post区 需要添加验证
 ###############
 @router.post("/post/new")
-async def create_post_route(post_data: PostCreate):
+async def create_post_route(post_data: PostCreate,
+                            credentials: JwtAuthorizationCredentials = Security(access_security)):
     """
     创建新文章。
 
@@ -67,5 +73,7 @@ async def create_post_route(post_data: PostCreate):
     Returns:
         dict: 包含是否创建成功的json。
     """
+    if not credentials:
+        raise CustomHTTPException(detail='您并没有权限这样做')
     result = await create_post(post_data, db)
     return result

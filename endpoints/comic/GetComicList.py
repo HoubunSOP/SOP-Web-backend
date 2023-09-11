@@ -1,3 +1,4 @@
+from Model import CustomHTTPException
 from database import Database
 
 
@@ -7,12 +8,12 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
         # 获取分类类型（漫画或文章）
         category_result = await db.execute("SELECT category FROM categories WHERE id = %s", category_id)
         if not category_result:
-            return {"status": "error", 'message': "无效的分类ID"}
+            raise CustomHTTPException(detail='无效的分类ID')
 
         category = category_result[0]['category']
 
         if category == '文章':
-            return {"status": "error", 'message': "无法从漫画列表筛选文章分类"}
+            raise CustomHTTPException(detail='无法从漫画列表筛选文章分类')
 
     # 构建计数查询的SQL语句
     count_sql = "SELECT COUNT(*) FROM comics"
@@ -25,7 +26,7 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
     total_count = count_result[0]['COUNT(*)']
     total_pages = (total_count + limit - 1) // limit
     if page > total_pages:
-        return {"status": "error", 'message': "并没有那么多的页面"}
+        raise CustomHTTPException(detail='并没有那么多的页面')
 
     # 构建文章列表查询的SQL语句
     list_sql = '''

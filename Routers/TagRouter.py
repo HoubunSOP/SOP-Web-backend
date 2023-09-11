@@ -1,4 +1,5 @@
-from fastapi import APIRouter,Query
+from fastapi import APIRouter, Query
+
 from Routers.DatabaseConnect import db
 from endpoints.tag.GetTag import get_comics_by_tag, get_posts_by_tag
 

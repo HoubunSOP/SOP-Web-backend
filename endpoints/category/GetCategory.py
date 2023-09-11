@@ -1,10 +1,11 @@
+from Model import CustomHTTPException
 from database import Database
 
 
 async def get_comics_by_category(db: Database, category_id: int, num: int):
-    types = await db.execute('SELECT category FROM categories WHERE id = %s;',category_id)
+    types = await db.execute('SELECT category FROM categories WHERE id = %s;', category_id)
     if types[0]['category'] != '漫画':
-        return {"status": "error", "message": "此分类ID为文章类型"}
+        raise CustomHTTPException(detail='此分类ID为文章类型')
     # 执行查询
     query = """
         SELECT c.id, c.name, c.date, c.cover, c.magazine
@@ -32,7 +33,7 @@ async def get_posts_by_category(db: Database, category_id: int, num: int):
     types = await db.execute('SELECT category FROM categories WHERE id = %s;', category_id)
     print(types)
     if types[0]['category'] != '文章':
-        return {"status": "error", "message": "此分类ID为漫画类型"}
+        raise CustomHTTPException(detail='此分类ID为漫画类型')
     # 执行查询
     query = """
         SELECT c.id, c.title, c.date, c.cover

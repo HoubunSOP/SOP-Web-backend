@@ -1,3 +1,4 @@
+from Model import CustomHTTPException
 from components.MarkdownRenderer import markdown_renderer
 from database import Database
 
@@ -44,4 +45,4 @@ async def get_post_info(post_id: int, md: int, db: Database):
                             "post_content": post_content, "post_cover": post_cover, "post_comic": post_comic,
                             "categories": categories, "category_id": category_id, "tags": tags}}
     else:
-        return {"status": "error", "message": "文章不存在"}
+        raise CustomHTTPException(detail='文章不存在')

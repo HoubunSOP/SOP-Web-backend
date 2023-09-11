@@ -1,3 +1,4 @@
+from Model import CustomHTTPException
 from database import Database
 
 
@@ -9,7 +10,7 @@ async def delete_empty_category(db: Database, category_id):
 
     if count == 0:
         # 分类不存在，返回错误或抛出异常，根据你的需求
-        return {"status": "error", "message": "并没有此分类"}
+        raise CustomHTTPException(detail='并没有此分类')
     # 查询分类下的文章数量
     query = "SELECT COUNT(*) FROM article_category_map WHERE category_id = %s"
     result = await db.execute(query, category_id)
@@ -22,7 +23,7 @@ async def delete_empty_category(db: Database, category_id):
 
     # 如果分类类型是漫画，不删除分类
     if category_type == "漫画":
-        return {"status": "error", "message": "此分类并不是文章分类，暂不支持删除"}
+        raise CustomHTTPException(detail='此分类并不是文章分类，暂不支持删除')
 
     # 如果文章数量为 0，删除分类
     if articles_count == 0:
@@ -30,7 +31,7 @@ async def delete_empty_category(db: Database, category_id):
         await db.execute(delete_query, category_id)
         return {"status": "success", "message": "删除完成"}
     else:
-        return {"status": "error", "message": "此分类下还有文章，请将所有文章都转移到其他分类后再删除"}
+        raise CustomHTTPException(detail='此分类下还有文章，请将所有文章都转移到其他分类后再删除')
 
 
 async def update_category_name(db: Database, category_id, new_name):
@@ -41,7 +42,7 @@ async def update_category_name(db: Database, category_id, new_name):
 
     if count == 0:
         # 分类不存在，返回错误或抛出异常，根据你的需求
-        return {"status": "error", "message": "并没有此分类"}
+        raise CustomHTTPException(detail='并没有此分类')
 
     # 更新分类名称
     update_query = "UPDATE categories SET name = %s WHERE id = %s"

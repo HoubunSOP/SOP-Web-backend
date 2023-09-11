@@ -1,7 +1,7 @@
 import aiomysql
-from fastapi import HTTPException
 
 from Model import ComicCreate
+from Model import CustomHTTPException
 from database import Database
 
 
@@ -16,7 +16,7 @@ async def create_comic(comic_data: ComicCreate, db: Database):
         comic_magazine = comic_data.magazine
         category_id = comic_data.magazine
     except KeyError as e:
-        raise HTTPException(status_code=400, detail=f"缺少必要字段：{str(e)}")
+        raise CustomHTTPException(status_code=400, detail=f"缺少必要字段：{str(e)}")
     if comic_magazine == 1:
         comic_magazine = "kirara"
     if comic_magazine == 2:
@@ -41,7 +41,7 @@ async def create_comic(comic_data: ComicCreate, db: Database):
                 comic_id
             )
             if not existing_comic:
-                raise HTTPException(status_code=404, detail=f"找不到ID为 {comic_id} 的漫画")
+                raise CustomHTTPException(status_code=404, detail=f"找不到ID为 {comic_id} 的漫画")
 
             await db.execute(
                 "UPDATE comics SET name = %s, date = %s, intro = %s, cover = %s, magazine = %s WHERE id = %s",
@@ -53,7 +53,7 @@ async def create_comic(comic_data: ComicCreate, db: Database):
             category_id
         )
         if not category:
-            raise HTTPException(status_code=400, detail=f"无效的分类ID: {category_id}")
+            raise CustomHTTPException(status_code=400, detail=f"无效的分类ID: {category_id}")
 
         await db.execute(
             "INSERT INTO comic_category_map (comic_id, category_id) VALUES (%s, %s) "
@@ -62,6 +62,6 @@ async def create_comic(comic_data: ComicCreate, db: Database):
         )
 
     except aiomysql.Error as e:
-        raise HTTPException(status_code=500, detail=f"数据库错误：{str(e)}")
+        raise CustomHTTPException(status_code=500, detail=f"数据库错误：{str(e)}")
 
     return {"status": "success", "message": "漫画已成功创建/更新！"}

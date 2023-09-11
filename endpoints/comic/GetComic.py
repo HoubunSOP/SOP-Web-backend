@@ -1,3 +1,4 @@
+from Model import CustomHTTPException
 from components.MarkdownRenderer import markdown_renderer
 from database import Database
 
@@ -47,4 +48,4 @@ async def get_comic_info(comic_id: int,md: int, db: Database):
                             "comic_intro": comic_intro, "comic_cover": comic_cover, "comic_magazine": comic_magazine,
                             "categories": categories, "category_id": category_id, "tags": tags}}
     else:
-        return {"status": "error", "message": "漫画不存在"}
+        raise CustomHTTPException(detail='漫画不存在')

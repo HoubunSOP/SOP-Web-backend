@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Security
+from fastapi_jwt import JwtAuthorizationCredentials
+
+from Model import ComicCreate, access_security
+from Model import CustomHTTPException
+from Routers.DatabaseConnect import db
 from endpoints.comic.CreateComic import create_comic
 from endpoints.comic.DelComic import delete_comic
 from endpoints.comic.GetComic import get_comic_info
-from Model import ComicCreate
-from Routers.DatabaseConnect import db
 from endpoints.comic.GetComicList import get_comic_list
 
 router = APIRouter()
@@ -20,11 +23,15 @@ async def get_comic_list_route(limit: int = Query(10, gt=0), page: int = Query(1
     """
     result = await get_comic_list(db, limit, page, category_id)
     return result
+
+
 @router.get("/comic/del/{comic_id}")
-async def del_comic_route(comic_id: int):
+async def del_comic_route(comic_id: int, credentials: JwtAuthorizationCredentials = Security(access_security)):
     """
     删除漫画。
     """
+    if not credentials:
+        raise CustomHTTPException(detail='您并没有权限这样做')
     result = await delete_comic(comic_id, db)
     return result
 
@@ -48,7 +55,8 @@ async def get_comic_info_route(comic_id: int, md: int = Query(None, gt=0)):
 # post区 需要添加验证
 ###############
 @router.post("/comic/new")
-async def create_comic_route(comic_data: ComicCreate):
+async def create_comic_route(comic_data: ComicCreate,
+                             credentials: JwtAuthorizationCredentials = Security(access_security)):
     """
     创建新漫画。
 
@@ -58,5 +66,7 @@ async def create_comic_route(comic_data: ComicCreate):
     Returns:
         dict: 包含是否创建成功的json。
     """
+    if not credentials:
+        raise CustomHTTPException(detail='您并没有权限这样做')
     result = await create_comic(comic_data, db)
     return result

@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
+from Routers.DatabaseConnect import db
 from endpoints.page.index.GetMangaCalendar import get_manga_calendar
 from endpoints.page.index.GetMangaList import get_manga_list
 from endpoints.page.index.GetRecommendedArticles import get_recommended_articles
 from endpoints.page.index.GetTopSwiper import get_top_swiper
-from Routers.DatabaseConnect import db
 
 router = APIRouter()
 
