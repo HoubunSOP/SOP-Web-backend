@@ -6,7 +6,7 @@ from fastapi_jwt import (
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import PlainTextResponse
 
-from Model import access_security, CustomHTTPException
+from Model import access_security, CustomHTTPException, AuthCreate
 from Routers import ComicRouter, PostRouter, CategoryRouter, TagRouter, IndexRouter, DatabaseConnect
 from database import Database
 
