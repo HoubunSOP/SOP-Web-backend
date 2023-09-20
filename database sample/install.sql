@@ -8,6 +8,7 @@ CREATE TABLE comics
     intro    TEXT COMMENT '漫画简介，支持Markdown语法',
     cover    VARCHAR(255) NOT NULL COMMENT '封面图片文件名',
     magazine VARCHAR(255) COMMENT '所属刊物。例如："刊物1"',
+    auto     BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '是否为自动生成',
     PRIMARY KEY (id)
 );
 CREATE TABLE categories
@@ -76,4 +77,5 @@ INSERT INTO categories (name, category)
 VALUES ('Kirara', '漫画'),
        ('MAX', '漫画'),
        ('Carat', '漫画'),
-       ('Forward', '漫画')
+       ('Forward', '漫画'),
+       ('未确认','漫画')

@@ -13,6 +13,7 @@ class ComicCreate(BaseModel):
     author: str
     cover: str
     magazine: int
+    auto: bool
 
 
 class Category(BaseModel):

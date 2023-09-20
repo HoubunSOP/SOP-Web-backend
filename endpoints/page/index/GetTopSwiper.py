@@ -4,7 +4,7 @@ from database import Database
 
 async def get_top_swiper(db: Database):
     result = await db.execute("SELECT topswiper FROM settings")
-    if result is None:
+    if result == "()" or result is None:
         raise CustomHTTPException(detail='没有找到设置')
     print(result)
     top_swiper_ids = result[0]["topswiper"].split(',')
