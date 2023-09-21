@@ -30,7 +30,7 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
 
     # 构建文章列表查询的SQL语句
     list_sql = '''
-        SELECT a.id, a.name, a.date, a.cover,
+        SELECT a.id, a.name, a.date, a.cover, a.auto,
                (SELECT GROUP_CONCAT(c.id, ':', c.name) 
                 FROM comic_category_map AS acm 
                 JOIN categories AS c ON acm.category_id = c.id 
@@ -55,7 +55,7 @@ async def get_comic_list(db: Database, limit: int = 10, page: int = 1, category_
         else:
             categories = ["", "未分类"]
         comic = {'id': row['id'], 'name': row['name'], 'date': row['date'], 'cover': row['cover'],
-                 'category_id': categories[0], 'category_name': categories[1]}
+                 'category_id': categories[0], 'category_name': categories[1], 'auto': row['auto']}
         comics.append(comic)
 
     return {"status": "success", "message": {'comics': comics, 'total_pages': total_pages}}

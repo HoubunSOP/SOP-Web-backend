@@ -90,10 +90,10 @@ def get_intro(detail_url, n):
     intro = None
     maincolumn = soup.find('div', id='maincolumn')
     if maincolumn:
-        entrycontainer = maincolumn.find('div', class_='entrycontainer')
-        entryareas = entrycontainer.find_all(class_='entryarea') if entrycontainer else None
-        n = min(int(n) - 1, len(entryareas))
-        entryarea = entryareas[-n]
+        entrycontainers = maincolumn.find_all('div', class_='entrycontainer')
+        n = min(int(n), len(entrycontainers))
+        entrycontainer = entrycontainers[-n]
+        entryarea = entrycontainer.find(class_='entryarea') if entrycontainer else None
         txtarea = entryarea.find('dl', class_='txtarea') if entryarea else None
         story = txtarea.find('dd', class_='story') if txtarea else None
         intro = story.get_text(strip=True) if story else None
