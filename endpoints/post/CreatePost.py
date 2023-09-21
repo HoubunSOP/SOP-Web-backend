@@ -16,6 +16,7 @@ async def create_post(post_data: PostCreate, db: Database):
         post_cover = post_data.cover
         post_comic = ""
         category_id = post_data.category.id  # 使用单个分类ID
+        recommended = post_data.recommended
     except KeyError as e:
         raise CustomHTTPException(status_code=400, detail=f"缺少必要字段：{str(e)}")
 
@@ -32,8 +33,8 @@ async def create_post(post_data: PostCreate, db: Database):
 
             # 修改文章操作
             await db.execute(
-                "UPDATE articles SET title = %s, date = %s, content = %s, cover = %s, comic = %s WHERE id = %s",
-                post_name, post_date, post_content, post_cover, post_comic, post_id
+                "UPDATE articles SET title = %s, date = %s, content = %s, cover = %s, comic = %s,recommended = %s WHERE id = %s",
+                post_name, post_date, post_content, post_cover, post_comic, recommended, post_id
             )
             await db.execute(
                 "UPDATE article_category_map SET category_id = %s WHERE article_id = %s",
@@ -42,8 +43,8 @@ async def create_post(post_data: PostCreate, db: Database):
         else:
             # 创建文章操作
             post_id = await db.execute(
-                "INSERT INTO articles (title, date, content, cover, comic) VALUES (%s, %s, %s, %s, %s)",
-                post_name, post_date, post_content, post_cover, post_comic
+                "INSERT INTO articles (title, date, content, cover, comic,recommended) VALUES (%s, %s, %s, %s, %s,%s)",
+                post_name, post_date, post_content, post_cover, post_comic, recommended
             )
             post_id = (await db.execute("SELECT LAST_INSERT_ID()"))[0]["LAST_INSERT_ID()"]
             print("New post ID is: %s" % post_id)

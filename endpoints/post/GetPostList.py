@@ -33,7 +33,7 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
 
     # 构建文章列表查询的SQL语句
     list_sql = '''
-        SELECT a.id, a.title, a.date, a.cover,
+        SELECT a.id, a.title, a.date, a.cover,a.recommended,
                (SELECT GROUP_CONCAT(c.id, ':', c.name) 
                 FROM article_category_map AS acm 
                 JOIN categories AS c ON acm.category_id = c.id 
@@ -53,9 +53,12 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
         result = await db.execute(list_sql, limit, offset)
     articles = []
     for row in result:
-        categories = row['categories'].split(":")
+        if row['categories'] is not None:
+            categories = row['categories'].split(":")
+        else:
+            categories = ["",""]
         article = {'id': row['id'], 'title': row['title'], 'date': row['date'], 'cover': row['cover'],
+                   'recommended': row['recommended'],
                    'category_id': categories[0], 'category_name': categories[1]}
         articles.append(article)
-
     return {"status": "success", "message": {'articles': articles, 'total_pages': total_pages}}

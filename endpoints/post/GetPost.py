@@ -10,6 +10,7 @@ async def get_post_info(post_id: int, md: int, db: Database):
                c.content AS post_content,
                c.cover AS post_cover,
                c.comic AS post_comic,
+               c.recommended AS recommended,
                GROUP_CONCAT(DISTINCT ca.name) AS category_names,
                GROUP_CONCAT(DISTINCT ca.id) AS category_id,
                GROUP_CONCAT(DISTINCT t.name) AS tag_names
@@ -29,6 +30,7 @@ async def get_post_info(post_id: int, md: int, db: Database):
         post_cover = result[0]['post_cover']
         post_comic = result[0]['post_comic']
         category_id = result[0]['category_id']
+        recommended = result[0]['recommended']
         categories = []
         tags = []
         for r in result:
@@ -42,7 +44,8 @@ async def get_post_info(post_id: int, md: int, db: Database):
             post_content = markdown_renderer(post_content)
         return {"status": "success",
                 "message": {"post_id": post_id, "post_name": post_name, "post_date": post_date,
-                            "post_content": post_content, "post_cover": post_cover, "post_comic": post_comic,
+                            "post_content": post_content, "post_cover": post_cover, "recommended": recommended,
+                            "post_comic": post_comic,
                             "categories": categories, "category_id": category_id, "tags": tags}}
     else:
         raise CustomHTTPException(detail='文章不存在')

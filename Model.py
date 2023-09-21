@@ -28,6 +28,7 @@ class PostCreate(BaseModel):
     content: str
     cover: str
     category: Category
+    recommended: int
 
 
 class RenameCat(BaseModel):
