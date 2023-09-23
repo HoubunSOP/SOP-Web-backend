@@ -46,6 +46,10 @@ class AuthCreate(BaseModel):
     password: str
 
 
+class SettingsChange(BaseModel):
+    topswiper: str
+
+
 # 一些其他的函数
 access_security = JwtAccessBearerCookie(
     secret_key="secret_key",

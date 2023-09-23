@@ -1,10 +1,13 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Security
+from fastapi_jwt import JwtAuthorizationCredentials
 
+from Model import access_security, CustomHTTPException, SettingsChange
 from Routers.DatabaseConnect import db
 from endpoints.page.index.GetMangaCalendar import get_manga_calendar
 from endpoints.page.index.GetMangaList import get_manga_list
 from endpoints.page.index.GetRecommendedArticles import get_recommended_articles
 from endpoints.page.index.GetTopSwiper import get_top_swiper
+from endpoints.page.index.Settings import change_settings, get_settings
 
 router = APIRouter()
 
@@ -43,4 +46,22 @@ async def manga_calendar_route():
 @router.get("/index/recommended")
 async def recommended_articles_route():
     result = await get_recommended_articles(db)
+    return result
+
+
+@router.get("/index/settings")
+async def get_settings_route():
+    result = await get_settings(db)
+    return result
+
+
+###############
+# post区 需要添加验证
+###############
+@router.post("/index/settings")
+async def change_settings_route(settings_change: SettingsChange,
+                                credentials: JwtAuthorizationCredentials = Security(access_security)):
+    if not credentials:
+        raise CustomHTTPException(detail='您并没有权限这样做')
+    result = await change_settings(settings_change, db)
     return result
