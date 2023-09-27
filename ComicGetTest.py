@@ -1,8 +1,10 @@
 import asyncio
 import xml.etree.ElementTree as ET
+
 import requests
-from database import Database
 from bs4 import BeautifulSoup
+
+from database import Database
 
 db = Database()
 

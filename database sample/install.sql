@@ -70,6 +70,7 @@ CREATE TABLE article_tag_map
 );
 CREATE TABLE settings
 (
+    id INT NOT NULL COMMENT '唯一标识',
     topswiper VARCHAR(255) NOT NULL COMMENT 'topswiper的文章id'
 );
 -- 添加漫画分类
@@ -78,4 +79,6 @@ VALUES ('Kirara', '漫画'),
        ('MAX', '漫画'),
        ('Carat', '漫画'),
        ('Forward', '漫画'),
-       ('未分类','文章')
+       ('未分类', '文章');
+INSERT INTO settings (id, topswiper)
+VALUES ('0', '')
