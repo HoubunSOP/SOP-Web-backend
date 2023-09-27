@@ -56,7 +56,7 @@ async def get_post_list(db: Database, limit: int = 10, page: int = 1, category_i
         if row['categories'] is not None:
             categories = row['categories'].split(":")
         else:
-            categories = ["",""]
+            categories = ["", "未分类"]
         article = {'id': row['id'], 'title': row['title'], 'date': row['date'], 'cover': row['cover'],
                    'recommended': row['recommended'],
                    'category_id': categories[0], 'category_name': categories[1]}
