@@ -7,7 +7,7 @@ from endpoints.page.index.GetMangaCalendar import get_manga_calendar
 from endpoints.page.index.GetMangaList import get_manga_list
 from endpoints.page.index.GetRecommendedArticles import get_recommended_articles
 from endpoints.page.index.GetTopSwiper import get_top_swiper
-from endpoints.page.index.Settings import change_settings, get_settings
+from endpoints.page.index.Settings import change_settings, get_settings, get_stats
 
 router = APIRouter()
 
@@ -48,6 +48,10 @@ async def recommended_articles_route():
     result = await get_recommended_articles(db)
     return result
 
+@router.get("/index/stats")
+async def get_stats_route():
+    result = await get_stats(db)
+    return result
 
 @router.get("/index/settings")
 async def get_settings_route():

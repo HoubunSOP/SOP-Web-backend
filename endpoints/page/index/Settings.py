@@ -32,3 +32,15 @@ async def change_top_swiper(topswiper_change, db: Database):
 async def get_settings(db: Database):
     settings = await db.execute("SELECT topswiper FROM settings WHERE id = 0")
     return {"status": "success", "message": {"topswiper": settings[0]['topswiper']}}
+
+
+async def get_stats(db: Database):
+    comic_count = await db.execute("SELECT COUNT(*) AS comic_count FROM comics;")
+    article_count = await db.execute("SELECT COUNT(*) AS article_count FROM articles;")
+    categories_count = await db.execute("SELECT COUNT(*) AS category_count FROM categories;")
+    result = {
+        'comic_count': comic_count[0]['comic_count'],
+        'article_count': article_count[0]['article_count'],
+        'category_count': categories_count[0]['category_count']
+    }
+    return {"status": "success", "message": result}
