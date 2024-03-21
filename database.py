@@ -1,11 +1,15 @@
 import aiomysql
-import yaml
-
+from config import DATABASE_ADDRESS, DATABASE_BASENAME, DATABASE_USER, DATABASE_PASSWORD
 
 class Database:
     def __init__(self):
-        with open('config.yml', 'r') as f:
-            self.config = yaml.safe_load(f)['database']
+        self.config = {
+            'host': DATABASE_ADDRESS,
+            'port': 3306,  # 默认 MySQL 端口
+            'user': DATABASE_USER,
+            'password': DATABASE_PASSWORD,
+            'database': DATABASE_BASENAME
+        }
         self.pool = None
 
     async def connect(self):
