@@ -1,7 +1,7 @@
 FROM python:3.8.13
 
 LABEL project="SOP-Web-backend"
-copy . /
+COPY . /
 WORKDIR /
 EXPOSE 5000
 
